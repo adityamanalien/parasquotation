@@ -155,6 +155,11 @@ async function buildQuotation(){
   drawLine(address,side.addressValueX,L.addressTop,side.cellX+side.cellW-side.addressValueX);
   drawLine(mobile,side.mobileX,L.mobileTop,side.clearX+side.clearW-side.mobileX);
  }
+ // Center the COMPLETE quotation artwork (background + replacement text) on the physical page.
+ // A4 templates: shift right 42.5pt and down 16.5pt. IP 65 Letter template: right 42pt, down 21pt.
+ const shifts={utl:{x:42.5,y:-16.5},solar:{x:42.5,y:-16.5},ip65:{x:42,y:-21}};
+ const shift=shifts[format]||shifts.utl;
+ page.translateContent(shift.x,shift.y);
  const out=await pdf.save();
  return {blob:new Blob([out],{type:'application/pdf'}),filename:getFilename(format,name)};
 }
